@@ -20,7 +20,7 @@ exports.signup = (req, res) => {
 exports.getUser = async (req, res) => {
     try {
         const user = await User.findById({ _id: req.body.id }).populate(
-            'wishlist'
+            'wishlistformat'
         );
         res.status(200).send(user);
     } catch (error) {
@@ -31,7 +31,7 @@ exports.signin = (req, res) => {
     User.findOne({
         email: req.body.email,
     })
-        .populate('wishlist')
+        .populate('wishlistformat')
         .exec(async (err, user) => {
             if (err) {
                 res.status(500).send({ message: err });
