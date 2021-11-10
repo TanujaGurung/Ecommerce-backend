@@ -20,8 +20,7 @@ exports.signup = (req, res) => {
 exports.getUser = async (req, res) => {
     try {
         const user = await User.findById({ _id: req.body.id }).populate(
-            'wishlist',
-            '-password'
+            'wishlist'
         );
         res.status(200).send(user);
     } catch (error) {
