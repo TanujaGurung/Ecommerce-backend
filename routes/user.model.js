@@ -19,6 +19,24 @@ const User = mongoose.model(
                 type: String,
                 required: true,
             },
+            orders: [
+                {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'Order',
+                },
+            ],
+            cart: [
+                {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'cart_schema',
+                },
+            ],
+            wishlist: [
+                {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'wishlist_schema',
+                },
+            ],
         },
         { timestamps: true }
     )
