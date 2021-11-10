@@ -22,7 +22,30 @@ router.get('/', async (req, res) => {
         console.log(err);
     }
 }) */
+router.put('/:userId', async (req, res) => {
+    // router to post data
+    // console.log
+    // const feedslist = new Feeds({
+    //     title: req.body['title'],
+    //     url: req.body['url'],
+    //     description1: req.body['description1'],
+    //     price: req.body['price'],
+    // });
+    //console.log(newslist);
 
+    try {
+        const user = await User.findByIdAndUpdate(
+            { _id: req.params.userId },
+            {
+                $push: { wishlist: req.body.id },
+            }
+        );
+        res.json({ success: true, message: 'item added to wishlist' });
+    } catch (err) {
+        res.send('Error ' + err);
+        console.log(err);
+    }
+});
 router.post('/:userId', async (req, res) => {
     // router to post data
     // console.log
@@ -36,14 +59,14 @@ router.post('/:userId', async (req, res) => {
 
     try {
         const feeds1 = await feedslist.save();
-        console.log(feeds1);
-        const user = await User.findByIdAndUpdate(
-            { _id: req.params.userId },
-            {
-                $push: { wishlist: feeds1._id },
-            }
-        );
-        res.json({ success: true, message: 'item added to wishlist' });
+        res.json(feeds1);
+        // const user = await User.findByIdAndUpdate(
+        //     { _id: req.params.userId },
+        //     {
+        //         $push: { wishlist: feeds1._id },
+        //     }
+        // );
+        // res.json({ success: true, message: 'item added to wishlist' });
     } catch (err) {
         res.send('Error ' + err);
         console.log(err);
