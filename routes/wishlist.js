@@ -36,10 +36,13 @@ router.post('/:userId', async (req, res) => {
 
     try {
         const feeds1 = await feedslist.save();
-        const user = await user.findByIdAndUpdate(req.params.userId, {
-            $push: { wishlist: feeds1._id },
-        });
-        res.json(feeds1);
+        const user = await user.findByIdAndUpdate(
+            { _id: req.params.userId },
+            {
+                $push: { wishlist: feeds1._id },
+            }
+        );
+        res.json(user);
     } catch (err) {
         res.send('Error ' + err);
         console.log(err);
