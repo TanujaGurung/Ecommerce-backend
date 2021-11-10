@@ -2,18 +2,16 @@ const express = require('express');
 const router = express.Router();
 const Products = require('./productformat');
 
-// router.get('/', async (req, res) => {
-//     try {
-//         const products = await Products.find(); // find is a method in mongodb to get data
-//         res.json(products); // since response will be shown in the form of json
-//     } catch (err) {
-//         console.log(err);
-//         res.send('Error ' + err);
-//     }
-// });
-router.get('/', (req, res) => {
-    res.send('products');
+router.get('/', async (req, res) => {
+    try {
+        const products = await Products.find(); // find is a method in mongodb to get data
+        res.json(products); // since response will be shown in the form of json
+    } catch (err) {
+        console.log(err);
+        res.send('Error ' + err);
+    }
 });
+
 router.post('/create', async (req, res) => {
     const product = new Products({
         title: req.body.title,
