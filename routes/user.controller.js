@@ -17,21 +17,21 @@ exports.signup = (req, res) => {
         res.status(201).send({ message: 'User saved successfully' });
     });
 };
-exports.getUser = async (req, res) => {
+exports.getUserById = async (req, res) => {
     try {
-        const user = await User.findById({ _id: req.body.id }).populate(
-            'wishlistformat'
-        );
-        res.status(200).send(user);
+        const user = await User.findById({ _id: req.body.id })
+            .populate('wishlist', '-password')
+            .populate('cart');
+        res.status(200).send({ success: true, data: user });
     } catch (error) {
         res.status(500).send({ message: error });
     }
 };
-exports.signin = (req, res) => {
-    User.findOne({
+exports.signin = async (req, res) => {
+    await User.findOne({
         email: req.body.email,
     })
-        .populate('wishlistformat')
+        .populate('wishlist')
         .exec(async (err, user) => {
             if (err) {
                 res.status(500).send({ message: err });
