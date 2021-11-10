@@ -17,7 +17,17 @@ exports.signup = (req, res) => {
         res.status(201).send({ message: 'User saved successfully' });
     });
 };
-
+exports.getUser = async (req, res) => {
+    try {
+        const user = await User.findById({ _id: req.body.id }).populate(
+            'wishlist',
+            '-password'
+        );
+        res.status(200).send(user);
+    } catch (error) {
+        res.status(500).send({ message: error });
+    }
+};
 exports.signin = (req, res) => {
     User.findOne({
         email: req.body.email,
