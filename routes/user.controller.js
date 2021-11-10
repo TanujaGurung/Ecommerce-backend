@@ -31,26 +31,28 @@ exports.getUser = async (req, res) => {
 exports.signin = (req, res) => {
     User.findOne({
         email: req.body.email,
-    }).exec(async (err, user) => {
-        if (err) {
-            res.status(500).send({ message: err });
-            return;
-        }
+    })
+        .populate('wishlist')
+        .exec(async (err, user) => {
+            if (err) {
+                res.status(500).send({ message: err });
+                return;
+            }
 
-        if (!user) {
-            return res.status(404).send({ message: 'User Not found.' });
-        }
+            if (!user) {
+                return res.status(404).send({ message: 'User Not found.' });
+            }
 
-        let passwordIsValid = bcrypt.compareSync(
-            req.body.password,
-            user.password
-        );
+            let passwordIsValid = bcrypt.compareSync(
+                req.body.password,
+                user.password
+            );
 
-        if (!passwordIsValid) {
-            return res.status(401).send({
-                message: 'Invalid Password!',
-            });
-        }
-        res.status(200).send({ success: true, data: user });
-    });
+            if (!passwordIsValid) {
+                return res.status(401).send({
+                    message: 'Invalid Password!',
+                });
+            }
+            res.status(200).send({ success: true, data: user });
+        });
 };
