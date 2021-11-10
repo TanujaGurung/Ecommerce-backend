@@ -28,13 +28,13 @@ const User = mongoose.model(
             cart: [
                 {
                     type: mongoose.Schema.Types.ObjectId,
-                    ref: 'cart_schema',
+                    ref: 'cartformat',
                 },
             ],
             wishlist: [
                 {
                     type: mongoose.Schema.Types.ObjectId,
-                    ref: 'wishlist_schema',
+                    ref: 'wishlistformat',
                 },
             ],
         },

@@ -1,30 +1,28 @@
 const mongoose = require('mongoose');
 
 const wishlist_schema = new mongoose.Schema({
-   _id: mongoose.Schema.Types.ObjectId,
-    
-   // _id: Object,
-    
-    title:{
+    //    _id: mongoose.Schema.Types.ObjectId,
+
+    // _id: Object,
+
+    title: {
         type: String,
         required: true,
     },
-      url: {
+    url: {
         type: String,
-        required : true,
+        required: true,
     },
-    description1:{
+    description1: {
         type: String,
-        required : true,
+        required: true,
     },
-    price:{
+    price: {
         type: String,
-        required : true,
-    }
-}
-);
- 
+        required: true,
+    },
+});
 
-module.exports = mongoose.model('wishlistformat',wishlist_schema); 
+module.exports = mongoose.model('wishlistformat', wishlist_schema);
 // exporting the schematype of news
 //cart_schema.set('validateBeforeSave',false)

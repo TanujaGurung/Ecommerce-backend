@@ -1,17 +1,18 @@
-const express = require('express')
-const router = express.Router()
-const Feeds = require('./cartformat')
-const mongoose = require('mongoose')
+const express = require('express');
+const router = express.Router();
+const Feeds = require('./cartformat');
+const mongoose = require('mongoose');
+const User = require('./user.model');
 
-router.get('/', async (req,res) => {
-    try{
-           const feeds = await Feeds.find()   // find is a method in mongodb to get data
-           res.json(feeds)   // since response will be shown in the form of json
-    }catch(err){
+router.get('/', async (req, res) => {
+    try {
+        const feeds = await Feeds.find(); // find is a method in mongodb to get data
+        res.json(feeds); // since response will be shown in the form of json
+    } catch (err) {
         console.log(err);
-        res.send('Error ' + err)
+        res.send('Error ' + err);
     }
-})
+});
 
 /* router.get('/:id', async(req,res) => {   //getting a particular data from database using id
     try{
@@ -23,28 +24,32 @@ router.get('/', async (req,res) => {
     }
 }) */
 
-
-router.post('/', async(req,res) => {  
+router.post('/:userId', async (req, res) => {
     // router to post data
-   // console.log
+    // console.log
     const feedslist = new Feeds({
-        _id: new mongoose.Types.ObjectId(),
-        title:req.body["title"],
-       url: req.body["url"],
-      description1: req.body["description1"],
-       price: req.body["price"]  
-    })
+        title: req.body['title'],
+        url: req.body['url'],
+        description1: req.body['description1'],
+        price: req.body['price'],
+    });
     //console.log(newslist);
 
-    try{
-        const feeds1 =  await feedslist.save() 
-        res.json(feeds1)
-        
-    }catch(err){
-        res.send('Error ' + err)
+    try {
+        const feeds1 = await feedslist.save();
+        console.log(feeds1);
+        const user = await User.findByIdAndUpdate(
+            { _id: req.params.userId },
+            {
+                $push: { cart: feeds1._id },
+            }
+        );
+        res.json({ success: true, message: 'item added to cart' });
+    } catch (err) {
+        res.send('Error ' + err);
         console.log(err);
     }
-})
+});
 
 /* router.patch('/:id',async(req,res)=> {   // router to patcha particular data using id
     try{
@@ -63,21 +68,16 @@ router.post('/', async(req,res) => {
 })
 */
 
-router.delete('/:id',async(req,res)=> {  // creating delete router using a particular id 
-    try{
-        
-            const feeds = await Feeds.findById(req.params.id) ;
-          
-        
-        const feedslist = await feeds.delete()
-        res.json(feedslist)   
-    }catch(err){
-        res.send('Error' + err)
+router.delete('/:id', async (req, res) => {
+    // creating delete router using a particular id
+    try {
+        const feeds = await Feeds.findById(req.params.id);
+        const feedslist = await feeds.delete();
+        res.json(feedslist);
+    } catch (err) {
+        res.send('Error' + err);
         console.log(err);
     }
 });
 
-module.exports = router
-
-
-
+module.exports = router;

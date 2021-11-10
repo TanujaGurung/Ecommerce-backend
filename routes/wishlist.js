@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Feeds = require('./wishlistformat');
 const mongoose = require('mongoose');
-const user = require('./user.model');
+const User = require('./user.model');
 router.get('/', async (req, res) => {
     try {
         const feeds = await Feeds.find(); // find is a method in mongodb to get data
@@ -36,13 +36,14 @@ router.post('/:userId', async (req, res) => {
 
     try {
         const feeds1 = await feedslist.save();
-        const user = await user.findByIdAndUpdate(
+        console.log(feeds1);
+        const user = await User.findByIdAndUpdate(
             { _id: req.params.userId },
             {
                 $push: { wishlist: feeds1._id },
             }
         );
-        res.json(user);
+        res.json({ success: true, message: 'item added to wishlist' });
     } catch (err) {
         res.send('Error ' + err);
         console.log(err);
@@ -72,7 +73,7 @@ router.delete('/:id', async (req, res) => {
         const feeds = await Feeds.findById(req.params.id);
 
         const feedslist = await feeds.delete();
-        res.json(feedslist);
+        res.json({ feedslist });
     } catch (err) {
         res.send('Error' + err);
         console.log(err);
