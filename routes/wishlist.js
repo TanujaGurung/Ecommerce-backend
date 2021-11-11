@@ -18,7 +18,7 @@ router.put('/:userId', async (req, res) => {
 });
 router.put('/remove/:userId', async (req, res) => {
     try {
-        const data = await db.user.findByIdAndUpdate(
+        const data = await User.findByIdAndUpdate(
             { _id: req.params.userId },
             { $pull: { wishlist: req.body.id } }
         );
