@@ -19,4 +19,17 @@ router.put('/:userId', async (req, res) => {
     }
 });
 
+//remove on element from cart
+router.put('/remove/:userId', async (req, res) => {
+    try {
+        const data = await db.user.findByIdAndUpdate(
+            { _id: req.params.userId },
+            { $pull: { cart: req.body.id } }
+        );
+        res.status(200).json({ success: true, data: data });
+    } catch (err) {
+        res.status(400).json({ success: false, message: err.message });
+    }
+});
+
 module.exports = router;
