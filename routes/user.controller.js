@@ -7,6 +7,8 @@ exports.signup = (req, res) => {
         username: req.body.username,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 8),
+        residentAddress: req.body.residentAddress,
+        mobileNumber: req.body.mobileNumber,
     });
 
     user.save((err, user) => {
@@ -19,9 +21,9 @@ exports.signup = (req, res) => {
 };
 exports.getUserById = async (req, res) => {
     try {
-        const user = await User.findById({ _id: req.body.id })
-            .populate('wishlist', '-password')
-            .populate('cart');
+        const user = await User.findById({ _id: req.params.id })
+            .populate('wishlist')
+            .populate('cart', '-password');
         res.status(200).send({ success: true, data: user });
     } catch (error) {
         res.status(500).send({ message: error });
