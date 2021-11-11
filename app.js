@@ -7,10 +7,6 @@ var cors = require('cors');
 const mongoose = require('mongoose');
 const Razorpay = require('razorpay');
 require('dotenv').config();
-// const stripe = require("stripe")("sk_test_51JJDzRSGMn7poZZ91emL5SwJlVM1lfQ1mTjKd8uI9iZ4loUdddiemaE4HqmwylaVqi5iR8TnNx6BP2Hhqp0cjeGI00S9ls2p2R");
-// const uuid = require("uuid/v4");
-// app.use(express.json());
-// app.use(cors());
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -47,6 +43,7 @@ mongoose
         console.log('Not Connected to Database ERROR! ', err);
     });
 require('./routes/users')(app);
+require('./routes/order.route')(app);
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -56,16 +53,6 @@ app.use('/cart', cartRouter);
 app.use('/wishlist', wishlistRouter);
 app.use('/checkout', checkoutRouter);
 
-// error handler
-// app.use(function (err, req, res, next) {
-//     // set locals, only providing error in development
-//     res.locals.message = err.message;
-//     res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-//     // render the error page
-//     res.status(err.status || 500);
-//     res.render('error');
-// });
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log(`Server running on port ${port} 🔥`));

@@ -19,10 +19,16 @@ const User = mongoose.model(
                 type: String,
                 required: true,
             },
+            residentAddress: {
+                type: String,
+            },
+            mobileNumber: {
+                type: String,
+            },
             orders: [
                 {
                     type: mongoose.Schema.Types.ObjectId,
-                    ref: 'Order',
+                    ref: 'Orders',
                 },
             ],
             cart: [

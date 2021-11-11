@@ -1,5 +1,4 @@
-const User = require('./user.model');
-// const jwt = require('jsonwebtoken');
+const User = require('../models/user.model');
 const bcrypt = require('bcryptjs');
 
 exports.signup = (req, res) => {
@@ -22,6 +21,7 @@ exports.signup = (req, res) => {
 exports.getUserById = async (req, res) => {
     try {
         const user = await User.findById({ _id: req.params.id })
+            .populate('orders')
             .populate('wishlist')
             .populate('cart', '-password');
         res.status(200).send({ success: true, data: user });
